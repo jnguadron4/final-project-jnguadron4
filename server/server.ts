@@ -1,21 +1,53 @@
-import express from 'express';
+import express from 'express'
 import type { Request, Response } from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import sqlite3 from "sqlite3";
+
+import path from "path";
 
 const app = express();
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+const compression = require("compression");
+const helmet = require("helmet");
+const cors = require("cors");
 
-const port = 3001;
+app.use(cors());
+app.use(helmet());
+app.use(compression());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(bodyParser.json());
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../build')));
+// Port 5000 was not working. It was causing errors. Updated the port to 5001
+const port = process.env.PORT || 5001;
+
+// Database connection
+const db = new sqlite3.Database("./db/assigment-5.db", (err) => { 
+  if (err) {
+    console.error("Error opening database:", err.message);
+  } else {
+    console.log("Connected to the SQLite database.");
+  }
+});
+
+// Api routes
+app.get("/api/data", (req: Request, res: Response) => {
+  db.all("SELECT * FROM Projects", [], (err, rows) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+
+      return;
+    }
+
+    res.json(rows);
+  });
+});
 
 // Handle all other routes and return the React app
-app.get('/{*any}', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname, '../build', 'index.html'));
+app.get("/{*any}", (req: Request, res: Response) => {
+  res.send("Welcome to your backend!");
 });
 
 app.listen(port, () => {
