@@ -21,20 +21,25 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button className="theme-toggle" onClick={() => dispatch(toggleTheme())}>
+        <button
+          className="theme-toggle"
+          aria-label="Toggle dark mode"
+          aria-pressed={mode === 'dark'}
+          onClick={() => dispatch(toggleTheme())}
+        >
           Switch to {mode === 'light' ? 'Dark' : 'Light'} Mode
         </button>
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.tsx</code> and save to reload.
+          Building practical full-stack projects with React, TypeScript, and Node.js.
         </p>
         <a
           className="App-link"
-          href="https://reactjs.org"
+          href="https://module-7-assignment-deploy-jnguadron4-2.onrender.com/api/data"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          View Live Project Data API
         </a>
         <Projects />
       </header>
