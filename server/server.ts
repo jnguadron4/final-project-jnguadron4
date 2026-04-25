@@ -46,7 +46,7 @@ app.get("/api/data", (req: Request, res: Response) => {
 });
 
 // Handle all other routes and return the React app
-app.get("/{*any}", (req: Request, res: Response) => {
+app.get("*", (req: Request, res: Response) => {
   res.send("Welcome to your backend!");
 });
 
