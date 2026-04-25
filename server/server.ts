@@ -42,8 +42,8 @@ app.get("/api/data", (req: Request, res: Response) => {
   });
 });
 
-// Handle all other routes and return the React app
-app.get("*", (req: Request, res: Response) => {
+// Express 5 requires a named wildcard parameter in catch-all routes.
+app.get("/*splat", (req: Request, res: Response) => {
   res.send("Welcome to your backend!");
 });
 
